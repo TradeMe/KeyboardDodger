@@ -83,19 +83,19 @@ import UIKit
     
     /// Initialise with the userInfo dictionary from UIKeyboardWillChangeFrameNotification or UIKeyboardWillHideNotification.
     @objc public convenience init?(dictionary: [AnyHashable: Any]) {
-        guard let startFrame: CGRect = dictionary[UIKeyboardFrameBeginUserInfoKey] as? CGRect else {
+        guard let startFrame = dictionary[UIKeyboardFrameBeginUserInfoKey] as? CGRect else {
             return nil
         }
         
-        guard let endFrame: CGRect = dictionary[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let endFrame = dictionary[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
             return nil
         }
         
-        guard let animationDuration: TimeInterval = dictionary[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+        guard let animationDuration = dictionary[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
             return nil
         }
         
-        guard let animationCurve: UIViewAnimationCurve = dictionary[UIKeyboardAnimationCurveUserInfoKey] as? UIViewAnimationCurve else {
+        guard let animationCurve = (dictionary[UIKeyboardAnimationCurveUserInfoKey] as? Int).flatMap(UIViewAnimationCurve.init(rawValue:)) else {
             return nil
         }
         
