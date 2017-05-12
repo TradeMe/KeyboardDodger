@@ -5,7 +5,7 @@ KeyboardDodger is an iOS cocoapod that uses a constraint to move a view out of t
 ### Installation
 
 ```ruby
-pod 'TMUILibrary', '~> 1.0'
+pod 'KeyboardDodger', '~> 1.0'
 ```
 
 ### Usage
