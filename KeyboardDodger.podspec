@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.license = { :type => 'MIT' }
   s.author = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
   s.source = { :git => "https://github.com/TradeMe/KeyboardDodger.git", :tag => "1.0.0" }
-  s.source_files = 'Sources/*.{h,m,swift}'
+  s.source_files = 'Sources/*.swift'
   s.ios.deployment_target= '8.0'
 end
