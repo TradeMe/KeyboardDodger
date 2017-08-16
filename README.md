@@ -5,7 +5,7 @@ KeyboardDodger is an iOS cocoapod that uses a constraint to move a view out of t
 ### Installation
 
 ```ruby
-pod 'KeyboardDodger', '~> 1.0'
+pod 'KeyboardDodger', '~> 1.1'
 ```
 
 ### Usage
@@ -39,14 +39,6 @@ extension ViewController: KeyboardDodgerDelegate {
     
     func keyboardDodger(_ keyboardDodger: KeyboardDodger, didUpdateConstraintWith transition: KeyboardDodgerTransition) {
         print("Keyboard dodger did update constraint")
-    }
-    
-    func keyboardDodger(_ keyboardDodger: KeyboardDodger, willResetConstraintWith transition: KeyboardDodgerTransition) {
-        print("Keyboard dodger will reset constraint")
-    }
-    
-    func keyboardDodger(_ keyboardDodger: KeyboardDodger, didResetConstraintWith transition: KeyboardDodgerTransition) {
-        print("Keyboard dodger did reset constraint")
     }
 
 }
