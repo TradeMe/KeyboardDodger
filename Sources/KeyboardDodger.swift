@@ -38,12 +38,6 @@ import UIKit
     /// Called when the constraint handler has finished updating its constraint.
     @objc optional func keyboardDodger(_ keyboardDodger: KeyboardDodger, didUpdateConstraintWith transition: KeyboardDodgerTransition)
     
-    /// Called when the keyboard is about to reset its constraint to its original value.
-    @objc optional func keyboardDodger(_ keyboardDodger: KeyboardDodger, willResetConstraintWith transition: KeyboardDodgerTransition)
-    
-    /// Called when the keyboard has finished resetting its constraint to its original value.
-    @objc optional func keyboardDodger(_ keyboardDodger: KeyboardDodger, didResetConstraintWith transition: KeyboardDodgerTransition)
-    
     /// Called when the keyboard constraint handler needs to know whether to update its constraints with or after the keyboard has changed its frame.
     ///
     /// By default, this method returns .updateWithKeyboardChange, but for one exception:
@@ -107,7 +101,7 @@ import UIKit
     /// We take the overlap rather than just the height of the keyboard, as the view doesn't always take up the full screen
     /// (e.g. a form sheet on an iPad)
     @objc public func initialConstraintHeight(for view: UIView) -> CGFloat {
-        guard let frame = view.superview?.convert(view.frame, to: nil), keyboardIsDockedAtStart else {
+        guard let frame = view.superview?.convert(view.frame, to: nil) else {
             return 0.0
         }
         
@@ -119,7 +113,7 @@ import UIKit
     /// We take the overlap rather than just the height of the keyboard, as the view doesn't always take up the full screen
     /// (e.g. a form sheet on an iPad)
     @objc public func finalConstraintHeight(for view: UIView) -> CGFloat {
-        guard let frame = view.superview?.convert(view.frame, to: nil), keyboardIsDockedAtEnd else {
+        guard let frame = view.superview?.convert(view.frame, to: nil) else {
             return 0.0
         }
         
@@ -140,16 +134,6 @@ import UIKit
     /// (e.g. when a form sheet on an iPad moves underneath the keyboard)
     @objc public func isCollapsing(in view: UIView) -> Bool {
         return initialConstraintHeight(for: view) > finalConstraintHeight(for: view)
-    }
-    
-    // MARK: Private helpers
-    
-    private var keyboardIsDockedAtStart: Bool {
-        return UIScreen.main.bounds.maxY == startFrame.maxY
-    }
-    
-    private var keyboardIsDockedAtEnd: Bool {
-        return UIScreen.main.bounds.maxY == endFrame.maxY
     }
     
 }
@@ -219,7 +203,7 @@ import UIKit
         }
         
         if behavior(for: transition) == .updateWithKeyboardChange {
-            resetConstraint(with: transition)
+            updateConstraint(with: transition)
         }
     }
     
@@ -229,7 +213,7 @@ import UIKit
         }
         
         if behavior(for: transition) == .updateAfterKeyboardChange {
-            resetConstraint(with: transition)
+            updateConstraint(with: transition)
         }
     }
     
@@ -251,24 +235,6 @@ import UIKit
         }) { _ in
             self.delegate?.keyboardDodger?(self, didUpdateConstraintWith: transition)
         }
-    }
-    
-    private func resetConstraint(with transition: KeyboardDodgerTransition) {
-        guard constraint.constant != constant else {
-            return
-        }
-        
-        constraint.constant = constant
-        
-        delegate?.keyboardDodger?(self, willResetConstraintWith: transition)
-        
-        UIView.animate(withDuration: transition.animationDuration, delay: 0.0, options: UIViewAnimationOptions(animationCurve: transition.animationCurve), animations: { 
-            self.view.layoutIfNeeded()
-        }) { _ in
-            self.delegate?.keyboardDodger?(self, didResetConstraintWith: transition)
-        }
-        
-        
     }
     
     private func behavior(for transition: KeyboardDodgerTransition) -> KeyboardDodgerBehavior {

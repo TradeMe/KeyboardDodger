@@ -40,14 +40,6 @@ extension ViewController: KeyboardDodgerDelegate {
     func keyboardDodger(_ keyboardDodger: KeyboardDodger, didUpdateConstraintWith transition: KeyboardDodgerTransition) {
         print("Keyboard dodger did update constraint")
     }
-    
-    func keyboardDodger(_ keyboardDodger: KeyboardDodger, willResetConstraintWith transition: KeyboardDodgerTransition) {
-        print("Keyboard dodger will reset constraint")
-    }
-    
-    func keyboardDodger(_ keyboardDodger: KeyboardDodger, didResetConstraintWith transition: KeyboardDodgerTransition) {
-        print("Keyboard dodger did reset constraint")
-    }
 
 }
 ```
