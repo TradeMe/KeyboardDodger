@@ -30,7 +30,7 @@ import UIKit
 // MARK: - Keyboard dodger delegate
 
 /// Optional messages that can be received as the keyboard is shown/hidden.
-@objc public protocol KeyboardDodgerDelegate {
+@objc public protocol KeyboardDodgerDelegate: class {
     
     /// Called when the constraint handler is about to update its constraint.
     @objc optional func keyboardDodger(_ keyboardDodger: KeyboardDodger, willUpdateConstraintWith transition: KeyboardDodgerTransition)
@@ -169,7 +169,7 @@ import UIKit
     @objc private let constant: CGFloat
     
     /// The delegate is sent messages when the constraint values change.
-    @objc public let delegate: KeyboardDodgerDelegate?
+    @objc public weak let delegate: KeyboardDodgerDelegate?
     
     /// Instantiates a KeyboardDodger. Keep a reference to this around while you want it to handle
     /// manipulating the bottom constraint of the view.
