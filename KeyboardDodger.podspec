@@ -6,7 +6,7 @@
 #
 Pod::Spec.new do |s|
   s.name = "KeyboardDodger"
-  s.version = "1.0.0"
+  s.version = "1.0.1"
   s.summary = "KeyboardDodger uses a constraint to move a view out of the way of the on-screen keyboard."
   s.homepage = "https://github.com/TradeMe/KeyboardDodger"
   s.license = { :type => 'MIT' }
