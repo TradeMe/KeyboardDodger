@@ -169,7 +169,7 @@ import UIKit
     @objc private let constant: CGFloat
     
     /// The delegate is sent messages when the constraint values change.
-    @objc public weak let delegate: KeyboardDodgerDelegate?
+    @objc public weak var delegate: KeyboardDodgerDelegate?
     
     /// Instantiates a KeyboardDodger. Keep a reference to this around while you want it to handle
     /// manipulating the bottom constraint of the view.
