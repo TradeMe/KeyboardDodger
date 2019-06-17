@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source = { :git => "https://github.com/TradeMe/KeyboardDodger.git", :tag => "1.0.2" }
   s.source_files = 'KeyboardDodger/*.swift'
   s.ios.deployment_target = '8.0'
-  s.swift_version = '4.1'
+  s.swift_version = '5.0'
 end
