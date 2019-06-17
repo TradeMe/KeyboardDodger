@@ -72,9 +72,9 @@ import UIKit
     @objc public let animationDuration: TimeInterval
     
     /// Equivalent to UIKeyboardAnimationCurveUserInfoKey.
-    @objc public let animationCurve: UIViewAnimationCurve
+    @objc public let animationCurve: UIView.AnimationCurve
     
-    @objc public init(startFrame: CGRect, endFrame: CGRect, animationDuration: TimeInterval, animationCurve: UIViewAnimationCurve) {
+    @objc public init(startFrame: CGRect, endFrame: CGRect, animationDuration: TimeInterval, animationCurve: UIView.AnimationCurve) {
         self.startFrame = startFrame
         self.endFrame = endFrame
         self.animationDuration = animationDuration
@@ -83,19 +83,19 @@ import UIKit
     
     /// Initialise with the userInfo dictionary from UIKeyboardWillChangeFrameNotification or UIKeyboardWillHideNotification.
     @objc public convenience init?(dictionary: [AnyHashable: Any]) {
-        guard let startFrame = dictionary[UIKeyboardFrameBeginUserInfoKey] as? CGRect else {
+        guard let startFrame = dictionary[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect else {
             return nil
         }
         
-        guard let endFrame = dictionary[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let endFrame = dictionary[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return nil
         }
         
-        guard let animationDuration = dictionary[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+        guard let animationDuration = dictionary[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {
             return nil
         }
         
-        guard let animationCurve = (dictionary[UIKeyboardAnimationCurveUserInfoKey] as? Int).flatMap(UIViewAnimationCurve.init(rawValue:)) else {
+        guard let animationCurve = (dictionary[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int).flatMap(UIView.AnimationCurve.init(rawValue:)) else {
             return nil
         }
         
@@ -181,10 +181,10 @@ import UIKit
         
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidChangeFrame(_:)), name: Notification.Name.UIKeyboardDidChangeFrame, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: Notification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidChangeFrame(_:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     deinit {
@@ -246,7 +246,7 @@ import UIKit
         
         delegate?.keyboardDodger?(self, willUpdateConstraintWith: transition)
         
-        UIView.animate(withDuration: transition.animationDuration, delay: 0.0, options: UIViewAnimationOptions(animationCurve: transition.animationCurve), animations: {
+        UIView.animate(withDuration: transition.animationDuration, delay: 0.0, options: .init(animationCurve: transition.animationCurve), animations: {
             self.view.layoutIfNeeded()
         }) { _ in
             self.delegate?.keyboardDodger?(self, didUpdateConstraintWith: transition)
@@ -261,14 +261,11 @@ import UIKit
         constraint.constant = constant
         
         delegate?.keyboardDodger?(self, willResetConstraintWith: transition)
-        
-        UIView.animate(withDuration: transition.animationDuration, delay: 0.0, options: UIViewAnimationOptions(animationCurve: transition.animationCurve), animations: { 
+        UIView.animate(withDuration: transition.animationDuration, delay: 0.0, options: .init(animationCurve: transition.animationCurve), animations: {
             self.view.layoutIfNeeded()
         }) { _ in
             self.delegate?.keyboardDodger?(self, didResetConstraintWith: transition)
         }
-        
-        
     }
     
     private func behavior(for transition: KeyboardDodgerTransition) -> KeyboardDodgerBehavior {
@@ -306,9 +303,9 @@ extension UITraitEnvironment {
     
 }
 
-extension UIViewAnimationOptions {
+extension UIView.AnimationOptions {
     
-    fileprivate init(animationCurve: UIViewAnimationCurve) {
+    fileprivate init(animationCurve: UIView.AnimationCurve) {
         switch animationCurve {
         case .easeInOut:
             self = .curveEaseInOut
